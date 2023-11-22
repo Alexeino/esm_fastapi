@@ -29,6 +29,20 @@ def generate_access_token(
 
 
 def decode_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    """Function extracts token passed in the URL using oauth2_scheme (OAuth2PasswordBearer),
+    and then using jwt.decode() to decode the payload which is
+
+    Raises:
+        credentials_exception: In case token proivded isn't valid token for jwt.decode, raises this 401 error
+
+    Returns:
+        {
+            "current_user": {
+            "sub": "test01@gmail.com",
+            "exp": 1700641348
+            }
+        }
+    """
     credentials_exception = HTTPException(
         status_code=401,
         detail="Invalid credentials",
