@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from db.models.User import User
-from db.base_model import Model
+from db.base_model import Model, CRUDMixin
 
 
 class Category(Model):
@@ -13,7 +13,7 @@ class Category(Model):
     # To enable retrieve category by doing product.category
 
 
-class Product(Model):
+class Product(Model, CRUDMixin):
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     name: str = Column(String, index=True, nullable=False)
     price_per_unit: float = Column(Float, nullable=False)

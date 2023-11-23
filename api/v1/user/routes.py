@@ -11,6 +11,7 @@ from schemas.users import BearerTokenSchema
 from datetime import timedelta
 from api.v1.misc.Email import send_email_async, send_email_sync
 from time import perf_counter
+from api.v1.misc.base_schema import create_base_schema
 
 user_router = APIRouter()
 
@@ -24,7 +25,8 @@ async def register(user: UserSchema, db: Session = Depends(get_db)):
             user.email,
             f"User {user.username} has been created!",
         )
-    return user
+    Response = create_base_schema("username", "email")
+    return Response(username=user.username, email=user.email)
 
 
 @user_router.post("/token")
