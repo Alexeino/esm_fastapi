@@ -32,7 +32,7 @@ def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
     user = authenticate_user(form_data.username, form_data.password, db=db)
-    access_token = generate_access_token(data={"sub": user.email})
+    access_token = generate_access_token(data={"sub": user.email, "role": user.role})
     return BearerTokenSchema(
         access_token=access_token,
         expiry_minutes=str(settings.ACCESS_TOKEN_EXPIRE_MINUTES),

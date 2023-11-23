@@ -39,7 +39,8 @@ def decode_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_
         {
             "current_user": {
             "sub": "test01@gmail.com",
-            "exp": 1700641348
+            "exp": 1700641348,
+            "role": "CUST"
             }
         }
     """

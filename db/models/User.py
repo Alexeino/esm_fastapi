@@ -15,6 +15,7 @@ class User(Model):
     password: str = Column(String, nullable=False)
     is_active: bool = Column(Boolean, default=True)
     is_superuser: bool = Column(Boolean, default=False)
+    role: str = Column(String, nullable=True, default="CUST")
 
 
 class UserManager:
@@ -30,6 +31,7 @@ class UserManager:
             is_superuser=superuser,
             username=user.username,
             password=cls.hash_password(user.password),
+            role=user.role,
         )
         db.add(db_user)
         db.commit()
