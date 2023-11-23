@@ -31,9 +31,12 @@ async def list_products(db: Session = Depends(get_db)):
 
 
 @product_router.put(
-    "/update", dependencies=[Depends(UserRole(allowed_roles=["STAFF", "ADMIN"]))]
+    "/update",
+    dependencies=[Depends(UserRole(allowed_roles=["STAFF", "ADMIN"]))],
+    response_model=ProductResponseSchema,
 )
-async def update_product(product: ProductSchema, db: Session = Depends(get_db)):
-    pass
-
-    # TODO: logic to update product
+async def update_product(
+    id: int, product: ProductSchema, db: Session = Depends(get_db)
+):
+    updated_product = Product.update(id=id, db=db, **product.model_dump())
+    return updated_product
