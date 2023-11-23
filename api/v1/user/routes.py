@@ -9,13 +9,21 @@ from settings.Security import generate_access_token, decode_token
 from settings.config import settings
 from schemas.users import BearerTokenSchema
 from datetime import timedelta
+from api.v1.misc.Email import send_email_async, send_email_sync
+from time import perf_counter
 
 user_router = APIRouter()
 
 
 @user_router.post("/register")
-def register(user: UserSchema, db: Session = Depends(get_db)):
+async def register(user: UserSchema, db: Session = Depends(get_db)):
     user = UserManager.create_user(user=user, db=db)
+    if user:
+        await send_email_async(
+            f"User Registration Succesful!",
+            user.email,
+            f"User {user.username} has been created!",
+        )
     return user
 
 
@@ -32,5 +40,10 @@ def login_for_access_token(
 
 
 @user_router.get("/protected")
-def protected_route(current_user: dict = Depends(decode_token)):
+async def protected_route(current_user: dict = Depends(decode_token)):
+    start = perf_counter()
+    print("Sending Email Async")
+    await send_email_async("Testing Email Async", "test01@gmail.com", "Async Email")
+    end = perf_counter()
+    print("elapsed time - ", end - start)  # elapsed time -  0.017749178998201387
     return {"message": "This is protected test route!", "current_user": current_user}

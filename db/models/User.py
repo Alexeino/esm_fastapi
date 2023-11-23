@@ -45,13 +45,13 @@ class UserManager:
         return UserManager.context.hash(password)
 
     @classmethod
-    def set_password(cls, user: UserSchema):
-        if user:
-            user.password = cls.hash_password(user.password)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Password None"
-            )
+    def set_password(cls, user: UserSchema, password, db: Session):
+        db_user = db.query(User).filter(User.email == user.email).first()
+        db_user.password = cls.hash_password(password)
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
 
     @staticmethod
     def verify_password(plain_pwd, hashed_pwd):
