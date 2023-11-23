@@ -7,6 +7,8 @@ from db.models.product import Product
 from fastapi.exceptions import HTTPException
 from fastapi import status
 from schemas.base_schema import create_base_schema
+from schemas.products import ProductResponseSchema
+from typing import List
 
 product_router = APIRouter()
 
@@ -30,3 +32,9 @@ async def create_product(
     )  # Just playing to see if i can create response schema at response time
 
     return Response(name=product.name, price_per_unit=str(product.price_per_unit))
+
+
+@product_router.get("/all", response_model=List[ProductResponseSchema])
+async def list_products(db: Session = Depends(get_db)):
+    products = Product.all(db=db)
+    return products
