@@ -8,8 +8,7 @@ from api.v1.user.views import authenticate_user
 from settings.Security import generate_access_token, decode_token
 from settings.config import settings
 from schemas.users import BearerTokenSchema
-from datetime import timedelta
-from api.v1.misc.Email import send_email_async, send_email_sync
+from api.v1.misc.Email import send_email_async
 from time import perf_counter
 from schemas.base_schema import create_base_schema
 

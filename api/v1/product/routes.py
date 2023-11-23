@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from schemas.products import ProductSchema
 from db.session import get_db
 from db.models.product import Product
 from schemas.base_schema import create_base_schema
-from schemas.products import ProductResponseSchema
+from schemas.products import ProductResponseSchema, ProductSchema, ProductUpdateSchema
 from typing import List
 from api.v1.user.views import UserRole
 
@@ -36,7 +35,7 @@ async def list_products(db: Session = Depends(get_db)):
     response_model=ProductResponseSchema,
 )
 async def update_product(
-    id: int, product: ProductSchema, db: Session = Depends(get_db)
+    id: int, product: ProductUpdateSchema, db: Session = Depends(get_db)
 ):
     updated_product = Product.update(id=id, db=db, **product.model_dump())
     return updated_product

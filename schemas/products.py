@@ -8,6 +8,12 @@ class ProductSchema(BaseModel):
     category_id: int
 
 
+class ProductUpdateSchema(BaseModel):
+    name: Optional[str] = None
+    price_per_unit: Optional[float] = None
+    category_id: Optional[int] = None
+
+
 class CategorySchema(BaseModel):
     name: str
     category_code: str

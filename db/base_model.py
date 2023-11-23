@@ -32,7 +32,8 @@ class CRUDMixin:
                 status_code=status.HTTP_404_NOT_FOUND, detail=f"{cls} not found !"
             )
         for k, v in kwargs.items():
-            setattr(instance, k, v)
+            if v:
+                setattr(instance, k, v)
         db.add(instance)
         db.commit()
         db.refresh(instance)
