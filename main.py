@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from settings.config import settings
 from api.base import api_router
+from fastapi.middleware.cors import CORSMiddleware
+
+ALLOWED_ORIGINS = ["*"]
 
 
 def include_router(app):
@@ -14,6 +17,13 @@ def start_application():
 
 
 app = start_application()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")

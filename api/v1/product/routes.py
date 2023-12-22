@@ -24,8 +24,9 @@ async def create_product(product: ProductSchema, db: Session = Depends(get_db)):
 
 
 @product_router.get("/all", response_model=List[ProductResponseSchema])
-async def list_products(db: Session = Depends(get_db)):
-    products = Product.all(db=db)
+async def list_products(page: int = 1, limit: int = 5, db: Session = Depends(get_db)):
+    skip = page - 1 if page > 0 else page
+    products = Product.all(db=db, skip=skip, limit=limit)
     return products
 
 

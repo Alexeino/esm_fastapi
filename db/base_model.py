@@ -1,6 +1,7 @@
 from typing import Any
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import as_declarative, Session
+from sqlalchemy import select
 from fastapi.exceptions import HTTPException
 from fastapi import status
 
@@ -40,8 +41,11 @@ class CRUDMixin:
         return instance
 
     @classmethod
-    def all(cls, db: Session):
-        objects = db.query(cls).all()
+    def all(cls, db: Session, skip: int = 0, limit: int = 5):
+        jump = skip * limit if skip > 0 else skip
+        query = select(cls).order_by("id").offset(jump).limit(limit)
+        print(query)
+        objects = db.execute(query).scalars().all()
         return objects
 
     @classmethod

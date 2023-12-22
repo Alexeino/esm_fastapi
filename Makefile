@@ -2,7 +2,7 @@ export DATABASE_NAME=<your_db>
 export DATABASE_USER=
 export DATABASE_PASSWORD=
 export DATABASE_HOST=
-
+export PYTHONDONTWRITEBYTECODE=1
 PROJECT_NAME = ecom
 PYTHON = python3
 VENV_DIR = env
