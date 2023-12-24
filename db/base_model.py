@@ -1,7 +1,7 @@
 from typing import Any
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import as_declarative, Session
-from sqlalchemy import select
+from sqlalchemy import select, func
 from fastapi.exceptions import HTTPException
 from fastapi import status
 
@@ -59,3 +59,7 @@ class CRUDMixin:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"{cls} with id {id} not found!",
             )
+
+    @classmethod
+    def count(cls, db: Session):
+        return db.query(func.count()).select_from(cls).scalar()

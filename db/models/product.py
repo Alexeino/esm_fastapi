@@ -22,3 +22,5 @@ class Product(Model, CRUDMixin):
     category = relationship("Category", back_populates="products")
     # To enable reverse query like retrieving all products of a category
     # by simply doing category.products
+
+    image_url = Column(String, nullable=True)
